@@ -1,0 +1,29 @@
+{
+  "name": "jseverywhere",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dmitmokrov/jseverywhere.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dmitmokrov/jseverywhere/issues"
+  },
+  "homepage": "https://github.com/dmitmokrov/jseverywhere#readme",
+  "devDependencies": {
+    "nodemon": "2.0.15",
+    "prettier": "2.5.1"
+  },
+  "dependencies": {
+    "apollo-server-express": "3.6.3",
+    "express": "4.17.3",
+    "graphql": "16.3.0"
+  }
+}
