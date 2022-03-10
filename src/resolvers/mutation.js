@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 const {
   AuthenticationError,
   ForbiddenError,
@@ -8,21 +9,45 @@ const gravatar = require("../utils/gravatar");
 require("dotenv").config();
 
 module.exports = {
-  newNote: async (parent, { content }, { models }) => {
+  newNote: async (parent, { content }, { models, user }) => {
+    if (!user) {
+      throw new AuthenticationError("You must be signed in to create a note");
+    }
+
     return await models.Note.create({
       content,
-      author: "Adam Scott",
+      author: mongoose.Types.ObjectId(user.id),
     });
   },
-  deleteNote: async (parent, { id }, { models }) => {
+  deleteNote: async (parent, { id }, { models, user }) => {
+    if (!user) {
+      throw new AuthenticationError("You must be signed in to delete a note");
+    }
+
+    const note = models.Note.findById(id);
+
+    if (note && String(note.author) !== user.id) {
+      throw new ForbiddenError(`You don't have permissions to delete the note`);
+    }
+
     try {
-      await models.Note.findOneAndRemove({ _id: id });
+      await note.remove();
       return true;
     } catch (err) {
       return false;
     }
   },
-  updateNote: async (parent, { id, content }, { models }) => {
+  updateNote: async (parent, { id, content }, { models, user }) => {
+    if (!user) {
+      throw new AuthenticationError("You must be signed in to delete a note");
+    }
+
+    const note = models.Note.findById(id);
+
+    if (note && String(note.author) !== user.id) {
+      throw new ForbiddenError(`You don't have permissions to delete the note`);
+    }
+
     return await models.Note.findOneAndUpdate(
       {
         _id: id,
@@ -36,6 +61,50 @@ module.exports = {
         new: true,
       }
     );
+  },
+  toggleFavorite: async (parent, { id }, { models, user }) => {
+    if (!user) {
+      throw new AuthenticationError("");
+    }
+
+    const noteCheck = await models.Note.findById(id);
+    const hasUser = noteCheck.favoritedBy.includes(user.id);
+
+    if (hasUser) {
+      return await models.Note.findOneAndUpdate(
+        {
+          _id: id,
+        },
+        {
+          $pull: {
+            favoritedBy: mongoose.Types.ObjectId(user.id),
+          },
+          $inc: {
+            favoriteCount: -1,
+          },
+        },
+        {
+          new: true,
+        }
+      );
+    } else {
+      return await models.Note.findOneAndUpdate(
+        {
+          _id: id,
+        },
+        {
+          $push: {
+            favoritedBy: mongoose.Types.ObjectId(user.id),
+          },
+          $inc: {
+            favoriteCount: 1,
+          },
+        },
+        {
+          new: true,
+        }
+      );
+    }
   },
   signUp: async (parent, { username, email, password }, { models }) => {
     const saltRounds = 10;
@@ -65,7 +134,7 @@ module.exports = {
     }
 
     const user = await models.User.findOne({
-      $or: [{ email }, { username }],
+      $or: [{ email: normalizedEmail }, { username }],
     });
 
     if (!user) {
