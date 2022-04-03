@@ -39,7 +39,7 @@ async function startApolloServer(typeDefs, resolvers) {
     },
   });
 
-  app.use(helmet());
+  // app.use(helmet());
   app.use(cors());
   db.connect(DB_HOST);
   await server.start();
