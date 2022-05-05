@@ -1,6 +1,4 @@
 import { useQuery, gql } from "@apollo/client";
-import ReactMarkdown from "react-markdown";
-
 import NoteFeed from "../components/NoteFeed";
 
 const GET_NOTES = gql`
@@ -23,7 +21,7 @@ const GET_NOTES = gql`
   }
 `;
 
-const Home = () => {
+const HomePage = () => {
   const { data, loading, error, fetchMore } = useQuery(GET_NOTES);
 
   if (loading) {
@@ -41,4 +39,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;

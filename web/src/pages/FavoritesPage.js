@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export default function Favorites() {
+const FavoritesPage = () => {
   useEffect(() => {
     document.title = "My Notes — Favorites";
   });
@@ -11,3 +11,5 @@ export default function Favorites() {
     </div>
   );
 }
+
+export default FavoritesPage;

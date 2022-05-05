@@ -1,17 +1,19 @@
 import { Routes, Route } from "react-router-dom";
 
 import Layout from "../components/Layout";
-import Home from "./home";
-import MyNotes from "./mynotes";
-import Favorites from "./favorites";
+import HomePage from "./HomePage";
+import MyNotesPage from "./MyNotesPage";
+import FavoritesPage from "./FavoritesPage";
+import NotePage from "./NotePage";
 
 export default function Pages() {
   return (
     <Layout>
       <Routes>
-        <Route path="/" element={<Home />} exact />
-        <Route path="/mynotes" element={<MyNotes />} />
-        <Route path="/favorites" element={<Favorites />} />
+        <Route path="/" element={<HomePage />} exact />
+        <Route path="/mynotes" element={<MyNotesPage />} />
+        <Route path="/favorites" element={<FavoritesPage />} />
+        <Route path="/note/:id" element={<NotePage />} />
       </Routes>
     </Layout>
   );

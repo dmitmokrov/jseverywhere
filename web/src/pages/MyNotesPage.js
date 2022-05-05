@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export default function MyNotes() {
+const MyNotesPage = () => {
   useEffect(() => {
     document.title = "My Notes — Notedly";
   });
@@ -10,4 +10,6 @@ export default function MyNotes() {
       <p>These are my notes</p>
     </div>
   );
-}
+};
+
+export default MyNotesPage;
