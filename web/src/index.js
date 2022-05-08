@@ -9,9 +9,29 @@ import {
   gql,
 } from "@apollo/client";
 
+const cacheSettings = {
+  typePolicies: {
+    Query: {
+      fields: {
+        noteFeed: {
+          keyArgs: false,
+          merge(existing, incoming) {
+            const existingNotes = existing ? existing.notes : [];
+            return {
+              notes: [...existingNotes, ...incoming.notes],
+              cursor: incoming.cursor,
+              hasNextPage: incoming.hasNextPage,
+            };
+          },
+        },
+      },
+    },
+  },
+};
+
 const client = new ApolloClient({
   uri: process.env.API_URI,
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache(cacheSettings),
   connectToDevTools: true,
 });
 

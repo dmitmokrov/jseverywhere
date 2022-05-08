@@ -1,5 +1,6 @@
 import { useQuery, gql } from "@apollo/client";
 import NoteFeed from "../components/NoteFeed";
+import Button from "../components/Button";
 
 const GET_NOTES = gql`
   query NoteFeed($cursor: String) {
@@ -33,9 +34,22 @@ const HomePage = () => {
   }
 
   return (
-    <div>
+    <>
       <NoteFeed notes={data.noteFeed.notes} />
-    </div>
+      {data.noteFeed.hasNextPage && (
+        <Button
+          onClick={() => {
+            fetchMore({
+              variables: {
+                cursor: data.noteFeed.cursor,
+              },
+            });
+          }}
+        >
+          Load more
+        </Button>
+      )}
+    </>
   );
 };
 
