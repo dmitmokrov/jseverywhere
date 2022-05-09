@@ -1,5 +1,50 @@
 import styled from "styled-components";
+import { useQuery, gql } from "@apollo/client";
+import { Link, useNavigate } from "react-router-dom";
+import ButtonAsLink from "./ButtonAsLink";
+import { IS_LOGGED_IN } from "../utils/query";
 import logo from "../img/logo.svg";
+
+const IS_LOGGED_IN_LOCAL = gql`
+  {
+    isLoggedIn @client
+  }
+`;
+
+const Header = () => {
+  let navigate = useNavigate();
+  const { data, client } = useQuery(IS_LOGGED_IN_LOCAL);
+
+  const onClick = () => {
+    localStorage.removeItem("token");
+    client.resetStore();
+    client.writeQuery({
+      query: IS_LOGGED_IN,
+      data: {
+        isLoggedIn: false,
+      },
+    });
+    navigate("/");
+  };
+
+  return (
+    <HeaderBar>
+      <img src={logo} alt="Notedly Logo" height="40" />
+      <LogoText>Notedly</LogoText>
+      <UserState>
+        {data.isLoggedIn ? (
+          <ButtonAsLink onClick={onClick}>Logout</ButtonAsLink>
+        ) : (
+          <p>
+            <Link to={"/signin"}>Sign In</Link>
+            &nbsp;
+            <Link to={"signup"}>Sign Up</Link>
+          </p>
+        )}
+      </UserState>
+    </HeaderBar>
+  );
+};
 
 const HeaderBar = styled.header`
   width: 100%;
@@ -19,13 +64,8 @@ const LogoText = styled.h1`
   display: inline;
 `;
 
-const Header = () => {
-  return (
-    <HeaderBar>
-      <img src={logo} alt="Notedly Logo" height="40" />
-      <LogoText>Notedly</LogoText>
-    </HeaderBar>
-  );
-};
+const UserState = styled.div`
+  margin-left: auto;
+`;
 
 export default Header;

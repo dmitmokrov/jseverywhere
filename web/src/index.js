@@ -5,9 +5,11 @@ import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
-  useQuery,
+  createHttpLink,
   gql,
 } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+import { IS_LOGGED_IN } from "./utils/query";
 
 const cacheSettings = {
   typePolicies: {
@@ -29,11 +31,39 @@ const cacheSettings = {
   },
 };
 
-const client = new ApolloClient({
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem("token");
+  return {
+    headers: {
+      ...headers,
+      authorization: token || "",
+    },
+  };
+});
+
+const httpLink = createHttpLink({
   uri: process.env.API_URI,
-  cache: new InMemoryCache(cacheSettings),
+});
+
+const cache = new InMemoryCache(cacheSettings);
+
+const query = {
+  query: IS_LOGGED_IN,
+  data: {
+    isLoggedIn: !!localStorage.getItem("token"),
+  },
+};
+
+cache.writeQuery(query);
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache,
+  resolvers: {},
   connectToDevTools: true,
 });
+
+client.onResetStore(() => client.writeQuery(query));
 
 const app = document.getElementById("app");
 ReactDOM.render(
