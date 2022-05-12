@@ -9,7 +9,7 @@ import {
   gql,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import { IS_LOGGED_IN } from "./utils/query";
+import { IS_LOGGED_IN } from "./gql/query";
 
 const cacheSettings = {
   typePolicies: {

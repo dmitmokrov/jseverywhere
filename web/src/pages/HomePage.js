@@ -1,28 +1,15 @@
-import { useQuery, gql } from "@apollo/client";
+import { useEffect } from "react";
+import { useQuery } from "@apollo/client";
 import NoteFeed from "../components/NoteFeed";
 import Button from "../components/Button";
+import { GET_NOTES } from "../gql/query";
 
-const GET_NOTES = gql`
-  query NoteFeed($cursor: String) {
-    noteFeed(cursor: $cursor) {
-      hasNextPage
-      cursor
-      notes {
-        id
-        content
-        createdAt
-        favoriteCount
-        author {
-          id
-          username
-          avatar
-        }
-      }
-    }
-  }
-`;
 
 const HomePage = () => {
+  useEffect(() => {
+    document.title = "Notedly";
+  });
+
   const { data, loading, error, fetchMore } = useQuery(GET_NOTES);
 
   if (loading) {

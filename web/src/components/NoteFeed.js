@@ -22,7 +22,7 @@ const NoteFeed = ({ notes }) => {
       {notes.map((note) => (
         <NoteWrapper key={note.id}>
           <Note note={note} />
-          <Link to={`note/${note.id}`}>Permalink</Link>
+          <Link to={`/note/${note.id}`}>Permalink</Link>
         </NoteWrapper>
       ))}
     </NoteList>

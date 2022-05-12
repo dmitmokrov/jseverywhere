@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 
 import Layout from "../components/Layout";
 import HomePage from "./HomePage";
@@ -8,12 +8,8 @@ import FavoritesPage from "./FavoritesPage";
 import NotePage from "./NotePage";
 import SignUpPage from "./SignUpPage";
 import SignInPage from "./SignInPage";
-
-const IS_LOGGED_IN_LOCAL = gql`
-  {
-    isLoggedIn @client
-  }
-`;
+import NewNotePage from "./NewNotePage";
+import { IS_LOGGED_IN_LOCAL } from "../gql/query";
 
 const PrivateRoute = () => {
   let location = useLocation();
@@ -30,15 +26,14 @@ const Pages = () => {
     <Layout>
       <Routes>
         <Route path="/" element={<HomePage />} exact />
-        <Route path="/mynotes" element={<PrivateRoute />}>
-          <Route element={<MyNotesPage />} />
-        </Route>
-        <Route path="/favorites" element={<PrivateRoute />}>
-          <Route element={<FavoritesPage />} />
-        </Route>
         <Route path="/note/:id" element={<NotePage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/signin" element={<SignInPage />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/mynotes" element={<MyNotesPage />} />
+          <Route path="/favorites" element={<FavoritesPage />} />
+          <Route path="/new" element={<NewNotePage />} />
+        </Route>
       </Routes>
     </Layout>
   );

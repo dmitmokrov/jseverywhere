@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useApolloClient, gql } from "@apollo/client";
 import UserForm from "../components/UserForm";
-import { IS_LOGGED_IN } from "../utils/query";
+import { IS_LOGGED_IN } from "../gql/query";
 
 const SINGUP_USER = gql`
   mutation signUp($username: String!, $email: String!, $password: String!) {

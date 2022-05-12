@@ -1,6 +1,27 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
+const Navigation = () => {
+  return (
+    <Nav>
+      <NavList>
+        <li>
+          <Link to="/">Home</Link>
+        </li>
+        <li>
+          <Link to="/mynotes">My Notes</Link>
+        </li>
+        <li>
+          <Link to="/favorites">Favorites</Link>
+        </li>
+        <li>
+          <Link to="/new">New</Link>
+        </li>
+      </NavList>
+    </Nav>
+  );
+};
+
 const Nav = styled.nav`
   padding: 1em;
   background: #f5f4f0;
@@ -38,23 +59,5 @@ const NavList = styled.ul`
     color: #0077cc;
   }
 `;
-
-const Navigation = () => {
-  return (
-    <Nav>
-      <NavList>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/mynotes">My Notes</Link>
-        </li>
-        <li>
-          <Link to="/favorites">Favorites</Link>
-        </li>
-      </NavList>
-    </Nav>
-  );
-};
 
 export default Navigation;

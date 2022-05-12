@@ -1,15 +1,9 @@
 import styled from "styled-components";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { Link, useNavigate } from "react-router-dom";
 import ButtonAsLink from "./ButtonAsLink";
-import { IS_LOGGED_IN } from "../utils/query";
+import { IS_LOGGED_IN, IS_LOGGED_IN_LOCAL } from "../gql/query";
 import logo from "../img/logo.svg";
-
-const IS_LOGGED_IN_LOCAL = gql`
-  {
-    isLoggedIn @client
-  }
-`;
 
 const Header = () => {
   let navigate = useNavigate();
