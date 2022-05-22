@@ -6,6 +6,7 @@ import HomePage from "./HomePage";
 import MyNotesPage from "./MyNotesPage";
 import FavoritesPage from "./FavoritesPage";
 import NotePage from "./NotePage";
+import EditNotePage from "./EditNotePage";
 import SignUpPage from "./SignUpPage";
 import SignInPage from "./SignInPage";
 import NewNotePage from "./NewNotePage";
@@ -27,6 +28,7 @@ const Pages = () => {
       <Routes>
         <Route path="/" element={<HomePage />} exact />
         <Route path="/note/:id" element={<NotePage />} />
+        <Route path="/edit/:id" element={<EditNotePage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/signin" element={<SignInPage />} />
         <Route element={<PrivateRoute />}>

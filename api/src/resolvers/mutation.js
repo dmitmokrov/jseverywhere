@@ -39,13 +39,13 @@ module.exports = {
   },
   updateNote: async (parent, { id, content }, { models, user }) => {
     if (!user) {
-      throw new AuthenticationError("You must be signed in to delete a note");
+      throw new AuthenticationError("You must be signed in to update a note");
     }
 
-    const note = models.Note.findById(id);
+    const note = await models.Note.findById(id);
 
     if (note && String(note.author) !== user.id) {
-      throw new ForbiddenError(`You don't have permissions to delete the note`);
+      throw new ForbiddenError(`You don't have permissions to update the note`);
     }
 
     return await models.Note.findOneAndUpdate(

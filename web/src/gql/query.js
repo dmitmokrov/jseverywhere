@@ -87,3 +87,14 @@ export const GET_MY_FAVORITES = gql`
     }
   }
 `;
+
+export const GET_ME = gql`
+  query me {
+    me {
+      id
+      favorites {
+        id
+      }
+    }
+  }
+`;

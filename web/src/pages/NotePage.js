@@ -15,13 +15,8 @@ const NotePage = () => {
     variables: { id },
   });
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>Error! Note not found</p>;
-  }
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error! Note not found</p>;
   return <Note note={data.note} />;
 };
 
